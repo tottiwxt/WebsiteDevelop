@@ -26,4 +26,7 @@ public interface UserDAO {
 
     @Select({"select * from ", TABLE_NAME})
     List<User> getAllUsers();
+
+    @Select({"select ", SELECT_FIELDS, "FROM ",TABLE_NAME,"where name = #{name}"})
+    User selectByName(String username);
 }
