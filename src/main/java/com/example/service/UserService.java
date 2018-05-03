@@ -1,18 +1,23 @@
 package com.example.service;
 
+import com.example.dao.LoginTicketDAO;
 import com.example.dao.UserDAO;
+import com.example.model.LoginTicket;
 import com.example.model.User;
 import com.example.util.ToutiaoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.xml.crypto.Data;
 import java.util.*;
 
 @Service
 public class UserService {
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private LoginTicketDAO loginTicketDAO;
     public String say(){
         return "I,bonbon,show me your money";
     }
@@ -44,6 +49,10 @@ public class UserService {
         user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png ",new Random().nextInt(1000)));
         user.setPassword(ToutiaoUtil.MD5(password+user.getSalt()));
         userDAO.addUser(user);
+
+        //给登陆用户下发ticket
+        String ticket  = addLoginTicket(user.getId());
+        map.put("ticket",ticket);
         return map;
     }
     public Map<String, Object> login(String username, String password){
@@ -65,9 +74,21 @@ public class UserService {
         if(!user.getPassword().equals(ToutiaoUtil.MD5(password+user.getSalt()))){
             map.put("msgpwd","密码错误");
         }
-        //给登陆用户下发ticket
 
+        String ticket  = addLoginTicket(user.getId());
+        map.put("ticket",ticket);
 
         return map;
+    }
+    public String addLoginTicket(int userId){
+        LoginTicket ticket = new LoginTicket();
+        ticket.setUserId(userId);
+        Date date  = new Date();
+        date.setTime(date.getTime()+1000*3600*24);
+        ticket.setExpired(date);
+        ticket.setStatus(0);
+        ticket.setTicket(UUID.randomUUID().toString().replaceAll("-",""));
+        loginTicketDAO.addTicket(ticket);
+        return  ticket.getTicket();
     }
 }
