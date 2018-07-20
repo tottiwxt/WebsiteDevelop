@@ -77,6 +77,7 @@ public class UserService {
 
         String ticket  = addLoginTicket(user.getId());
         map.put("ticket",ticket);
+        System.out.println("login->addticket=" + ticket);
 
         return map;
     }
@@ -90,5 +91,9 @@ public class UserService {
         ticket.setTicket(UUID.randomUUID().toString().replaceAll("-",""));
         loginTicketDAO.addTicket(ticket);
         return  ticket.getTicket();
+    }
+
+    public void logout(String ticket) {
+        loginTicketDAO.deleteTicket(ticket);
     }
 }

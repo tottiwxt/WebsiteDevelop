@@ -7,7 +7,13 @@
 </head>
 
 <body>
-Message: ${message}
+
+
+<#if user??>
+        ${user.name}<br>
+ <#else>
+        nobody<br>
+ </#if>
 </body>
 
 </html>

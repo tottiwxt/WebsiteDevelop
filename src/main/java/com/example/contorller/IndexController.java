@@ -24,10 +24,12 @@ public class IndexController {
     UserService userService;
     @RequestMapping(path = {"/","/hello"})
     @ResponseBody
-    public String index(HttpSession session){
+    public ModelAndView index(HttpSession session){
 
-        return "Hello World<br>" + session.getAttribute("msg");
-
+        //return "Hello World<br>" + session.getAttribute("msg");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("welcome");
+        return modelAndView;
     }
     @RequestMapping(value = {"/profile/{name}/{age}"})
     @ResponseBody
