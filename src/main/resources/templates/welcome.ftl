@@ -7,7 +7,12 @@
 </head>
 
 <body>
-Message: ${message}
+
+<#if user??>
+    ${user.name}<br>
+<#else>
+    noCookie<br>
+</#if>
 </body>
 
 </html>
