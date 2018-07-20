@@ -9,6 +9,9 @@ import java.util.Map;
 
 public class ToutiaoUtil {
     private static final Logger logger = LoggerFactory.getLogger(ToutiaoUtil.class);
+    private static String[] file_format = new String[] {"png","jpge","bmp","jpg"};
+    public static String FILE_DIR = "C:\\Users\\wangxutao_sx\\Pictures\\";
+
     public static String MD5(String key) {
         char hexDigits[] = {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
@@ -51,5 +54,13 @@ public class ToutiaoUtil {
         json.put("code",code);
         json.put("msg",msg);
         return json.toJSONString();
+    }
+
+    public static boolean isfileLegal(String fileFormat) {
+        for(String format:file_format){
+            if(fileFormat.equals(format))
+                return true;
+        }
+        return false;
     }
 }
